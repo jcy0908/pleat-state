@@ -1,0 +1,38 @@
+# CMake and native build products
+/build/
+/build-*/
+/cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+Testing/
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+# Compiler products
+*.a
+*.d
+*.dll
+*.dylib
+*.exe
+*.lib
+*.o
+*.obj
+*.pdb
+*.so
+/cc*.s
+
+# Generated web bundle
+/dist/
+*.wasm.map
+
+# Tool and editor state
+.cache/
+/.tmp/
+.clangd/
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
