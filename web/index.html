@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#efeee9">
+    <meta
+      name="description"
+      content="C++20과 WebAssembly로 탐구하는 주름·장력·중력의 실시간 구조 연구, Pleat State."
+    >
+    <link rel="canonical" href="https://jcy0908.github.io/pleat-state/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="Pleat State — C++ / WebAssembly Material Study">
+    <meta
+      property="og:description"
+      content="주름·장력·감쇠·중력의 관계를 C++20 코어와 WebAssembly로 관찰하는 브라우저 소재 연구."
+    >
+    <meta property="og:url" content="https://jcy0908.github.io/pleat-state/">
+    <meta property="og:image" content="https://jcy0908.github.io/pleat-state/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="PLEAT/STATE 기술 포스터와 접힌 선형 메시">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pleat State — C++ / WebAssembly Material Study">
+    <meta
+      name="twitter:description"
+      content="주름·장력·감쇠·중력의 관계를 조작하는 C++20 / WebAssembly 소재 연구."
+    >
+    <meta name="twitter:image" content="https://jcy0908.github.io/pleat-state/og-image.png">
+    <title>Pleat State — C++ / WebAssembly Material Study</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 이동</a>
+
+    <header class="site-header frame">
+      <a class="wordmark" href="#top" aria-label="Pleat State 처음으로">
+        <span>PLEAT</span><span>/STATE</span>
+      </a>
+      <p class="header-index">MATERIAL STUDY&nbsp;&nbsp;PS—001</p>
+      <nav class="site-nav" aria-label="주요 탐색">
+        <a href="#study">실험</a>
+        <a href="#model">모델</a>
+        <a href="#critique">비평</a>
+        <a href="#credits">크레딧</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero frame" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="kicker"><span>01</span> Computational material study</p>
+          <h1 id="hero-title">
+            주름은 장식이 아니라<br>
+            <span>힘이 머문 기록인가?</span>
+          </h1>
+          <p class="hero-intro">
+            천을 닮은 입자망에 접힘 간격, 장력, 감쇠, 중력을 건다. 같은 표면이
+            어떤 조건에서 구조가 되고, 언제 다시 흐트러지는지 코드로 관찰한다.
+          </p>
+          <div class="hero-spec" aria-label="프로젝트 기술 정보">
+            <span>C++20 CORE</span>
+            <span>WEBASSEMBLY</span>
+            <span>LIVE IN BROWSER</span>
+          </div>
+        </div>
+
+        <div class="instrument" id="study">
+          <div class="instrument-bar">
+            <p class="runtime-status" aria-live="polite">
+              <span class="status-mark" aria-hidden="true"></span>
+              <span id="runtime-status">런타임을 준비하는 중</span>
+            </p>
+            <div class="instrument-actions">
+              <button class="text-button" id="pause-button" type="button" aria-pressed="false">
+                일시정지
+              </button>
+              <button class="text-button" id="reset-button" type="button">초기화</button>
+            </div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas
+              id="pleat-canvas"
+              width="960"
+              height="620"
+              tabindex="0"
+              role="img"
+              aria-label="접힌 입자망 시뮬레이션. 포인터로 끌거나 방향키와 스페이스 키로 조작할 수 있습니다."
+              aria-describedby="canvas-instructions"
+            ></canvas>
+            <p class="sr-only" id="canvas-instructions">
+              방향키로 조작점을 옮기고 스페이스 키로 입자를 잡거나 놓습니다. Esc 키로 즉시 놓을 수 있습니다.
+            </p>
+            <p class="sr-only" id="interaction-status" aria-live="polite"></p>
+            <p class="canvas-coordinate" aria-hidden="true">X—960 / Y—620</p>
+            <div class="canvas-help">
+              <span>DRAG TO APPLY FORCE</span>
+              <span>KEYBOARD: ↑↓←→ + SPACE</span>
+            </div>
+          </div>
+
+          <dl class="telemetry" aria-label="실시간 시뮬레이션 측정값">
+            <div>
+              <dt>Nodes</dt>
+              <dd id="metric-nodes">—</dd>
+            </div>
+            <div>
+              <dt>Faces</dt>
+              <dd id="metric-faces">—</dd>
+            </div>
+            <div>
+              <dt>Energy</dt>
+              <dd id="metric-energy">—</dd>
+            </div>
+            <div>
+              <dt>Render cost</dt>
+              <dd id="metric-render">—</dd>
+            </div>
+          </dl>
+
+          <div class="controls" aria-label="시뮬레이션 제어">
+            <div class="preset-group" role="group" aria-label="상태 프리셋">
+              <span class="control-label">State</span>
+              <button class="preset-button" type="button" data-preset="flat">평면</button>
+              <button class="preset-button is-active" type="button" data-preset="pleated">주름</button>
+              <button class="preset-button" type="button" data-preset="released">이완</button>
+            </div>
+
+            <label class="range-control" for="stiffness">
+              <span>장력 <output for="stiffness" id="stiffness-output">0.82</output></span>
+              <input id="stiffness" name="stiffness" type="range" min="0.1" max="0.99" value="0.82" step="0.01">
+            </label>
+            <label class="range-control" for="damping">
+              <span>감쇠 /s <output for="damping" id="damping-output">3.2</output></span>
+              <input id="damping" name="damping" type="range" min="0" max="10" value="3.2" step="0.1">
+            </label>
+            <label class="range-control" for="gravity">
+              <span>중력 <output for="gravity" id="gravity-output">720</output></span>
+              <input id="gravity" name="gravity" type="range" min="0" max="1400" value="720" step="10">
+            </label>
+            <label class="range-control" for="wind">
+              <span>횡력 <output for="wind" id="wind-output">0</output></span>
+              <input id="wind" name="wind" type="range" min="-600" max="600" value="0" step="10">
+            </label>
+            <label class="range-control" for="amplitude">
+              <span>접힘 깊이 <output for="amplitude" id="amplitude-output">56</output></span>
+              <input id="amplitude" name="amplitude" type="range" min="0" max="90" value="56" step="1">
+            </label>
+            <label class="range-control" for="frequency">
+              <span>접힘 수 <output for="frequency" id="frequency-output">9</output></span>
+              <input id="frequency" name="frequency" type="range" min="1" max="16" value="9" step="1">
+            </label>
+          </div>
+        </div>
+
+        <p class="hero-caption">
+          <span>LIVE STUDY</span>
+          수치는 브라우저 안에서 실행 중인 모델에서 읽는다. 성능 비교나 물성 검증을 뜻하지 않는다.
+        </p>
+      </section>
+
+      <section class="section frame" id="model" aria-labelledby="model-title">
+        <header class="section-head">
+          <p class="section-number">02</p>
+          <h2 id="model-title">Model / 무엇을 남기고 무엇을 버렸는가</h2>
+          <p>
+            실제 직물 전체를 재현하지 않는다. 질문에 답하는 데 필요한 관계만 남겨,
+            조작과 결과 사이의 거리를 짧게 만든다.
+          </p>
+        </header>
+
+        <div class="model-grid">
+          <article class="model-card">
+            <p class="model-index">A—01</p>
+            <h3>입자</h3>
+            <p>위치와 이전 위치를 가진 점. 상단 경계는 고정하고 나머지는 중력과 횡력에 반응한다.</p>
+          </article>
+          <article class="model-card">
+            <p class="model-index">A—02</p>
+            <h3>제약</h3>
+            <p>가로·세로·대각 연결이 이웃 거리를 되돌린다. 장력 값은 복원 강도를 조정한다.</p>
+          </article>
+          <article class="model-card">
+            <p class="model-index">A—03</p>
+            <h3>접힘</h3>
+            <p>주기와 깊이가 초기 형상을 정의한다. 주름은 텍스처가 아니라 시작 조건이다.</p>
+          </article>
+          <article class="model-card">
+            <p class="model-index">A—04</p>
+            <h3>시간</h3>
+            <p>작은 시간 간격으로 적분하고 제약을 반복한다. 불안정한 큰 도약은 허용하지 않는다.</p>
+          </article>
+        </div>
+
+        <div class="model-note">
+          <p>MODEL BOUNDARY</p>
+          <p>
+            굽힘 강성, 섬유 방향성, 충돌, 마찰, 공기역학은 아직 포함하지 않았다.
+            그러므로 이 결과는 ‘직물 예측’이 아니라 ‘힘의 관계를 보는 조작 가능한 가설’이다.
+          </p>
+        </div>
+      </section>
+
+      <section class="section frame evidence" aria-labelledby="evidence-title">
+        <header class="section-head compact">
+          <p class="section-number">03</p>
+          <h2 id="evidence-title">Evidence chain / 관찰을 결정으로 연결하기</h2>
+        </header>
+
+        <ol class="evidence-chain">
+          <li>
+            <span class="chain-index">01</span>
+            <div>
+              <p class="chain-label">Evidence</p>
+              <h3>접힘 깊이를 바꾸면 같은 외력에서도 복귀 경로와 에너지 표시값이 달라진다.</h3>
+              <p>현재 모델 안에서 장력은 고정하고 접힘 깊이만 바꿔, 수치와 형상의 변화를 나란히 관찰한다.</p>
+            </div>
+          </li>
+          <li>
+            <span class="chain-index">02</span>
+            <div>
+              <p class="chain-label">Interpretation</p>
+              <h3>형태의 차이는 표면 장식보다 초기 조건의 차이에 가깝다.</h3>
+              <p>‘예쁜 주름’을 고르는 대신, 힘이 남고 빠져나가는 경로를 인터페이스의 중심으로 둔다.</p>
+            </div>
+          </li>
+          <li>
+            <span class="chain-index">03</span>
+            <div>
+              <p class="chain-label">Decision</p>
+              <h3>프리셋보다 연속 제어를 먼저 보여준다.</h3>
+              <p>사용자는 완성된 장면을 소비하지 않고 장력·감쇠·중력 사이의 긴장을 직접 만든다.</p>
+            </div>
+          </li>
+          <li>
+            <span class="chain-index">04</span>
+            <div>
+              <p class="chain-label">Implementation</p>
+              <h3>C++ 상태를 복사하지 않고 메모리 뷰로 그린다.</h3>
+              <p>WebAssembly 메모리의 위치 배열을 Canvas가 읽어, 계산과 표현의 경계를 명시한다.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="evidence-caveat">
+          이 체인은 현재 모델 내부의 관찰을 설명한다. 사람 대상 평가나 실제 소재 실험의 결론으로 확장하지 않는다.
+        </p>
+      </section>
+
+      <section class="section frame alternatives" aria-labelledby="alternatives-title">
+        <header class="section-head compact">
+          <p class="section-number">04</p>
+          <h2 id="alternatives-title">Alternatives / 선택하지 않은 것도 설계다</h2>
+        </header>
+
+        <div class="decision-table" role="table" aria-label="기술 대안 비교">
+          <div class="decision-row decision-header" role="row">
+            <span role="columnheader">쟁점</span>
+            <span role="columnheader">검토한 대안</span>
+            <span role="columnheader">선택</span>
+            <span role="columnheader">이유와 대가</span>
+          </div>
+          <div class="decision-row" role="row">
+            <strong role="cell">적분</strong>
+            <span role="cell">명시적 Euler</span>
+            <span role="cell">Verlet 계열</span>
+            <span role="cell">위치 제약과 결합하기 단순하다. 대신 정밀한 물성 추정에는 적합하지 않다.</span>
+          </div>
+          <div class="decision-row" role="row">
+            <strong role="cell">실행</strong>
+            <span role="cell">JavaScript 전용</span>
+            <span role="cell">C++ → WASM</span>
+            <span role="cell">핵심 모델을 브라우저 밖에서도 시험한다. 빌드 경로와 경계 관리 비용이 생긴다.</span>
+          </div>
+          <div class="decision-row" role="row">
+            <strong role="cell">표현</strong>
+            <span role="cell">WebGL 재질</span>
+            <span role="cell">2D Canvas mesh</span>
+            <span role="cell">광택보다 구조를 읽기 쉽다. 깊이와 충돌 표현은 제한적이다.</span>
+          </div>
+          <div class="decision-row" role="row">
+            <strong role="cell">제어</strong>
+            <span role="cell">완성 프리셋 중심</span>
+            <span role="cell">연속 파라미터</span>
+            <span role="cell">원인과 결과를 탐색하게 한다. 처음 보는 사람에게는 설명 부담이 늘어난다.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section frame failures" aria-labelledby="failures-title">
+        <header class="section-head compact">
+          <p class="section-number">05</p>
+          <h2 id="failures-title">Failure log / 실패를 숨기지 않는 인터페이스</h2>
+        </header>
+
+        <div class="failure-list">
+          <article>
+            <p class="failure-code">F—01 / EXPLOSION</p>
+            <h3>큰 시간 간격에서 망이 화면 밖으로 발산했다.</h3>
+            <p><strong>변경:</strong> 프레임 간격을 제한하고 고정된 작은 단계로 나눴다.</p>
+            <p><strong>남은 위험:</strong> 극단적인 포인터 입력에서는 국소 변형이 여전히 커질 수 있다.</p>
+          </article>
+          <article>
+            <p class="failure-code">F—02 / FALSE DEPTH</p>
+            <h3>명암이 강할수록 물성이 정교해 보이는 착시가 생겼다.</h3>
+            <p><strong>변경:</strong> 광택과 그림자를 걷고 면·선·수치만 남겼다.</p>
+            <p><strong>남은 위험:</strong> 2D 투영은 접힘의 앞뒤 관계를 완전히 설명하지 못한다.</p>
+          </article>
+          <article>
+            <p class="failure-code">F—03 / CONTROL NOISE</p>
+            <h3>모든 내부 값을 노출하자 질문보다 조작이 앞섰다.</h3>
+            <p><strong>변경:</strong> 해석 가능한 여섯 값만 남기고 세 상태를 기준점으로 제공했다.</p>
+            <p><strong>남은 위험:</strong> 각 값의 단위가 현실 소재의 단위와 대응하지 않는다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section frame critique" id="critique" aria-labelledby="critique-title">
+        <header class="section-head compact">
+          <p class="section-number">06</p>
+          <h2 id="critique-title">Self-critique / 완성보다 다음 질문</h2>
+        </header>
+
+        <div class="critique-grid">
+          <article>
+            <p class="critique-label">Strongest</p>
+            <h3>계산을 장면 뒤에 숨기지 않았다.</h3>
+            <p>질문, 조작, 수치, 구현 경계를 한 화면에서 연결해 결과보다 사고 과정을 보이게 했다.</p>
+          </article>
+          <article>
+            <p class="critique-label">Unresolved</p>
+            <h3>시뮬레이션과 실제 천 사이의 거리가 크다.</h3>
+            <p>현재 계수는 상대 비교에는 쓰이지만 재료의 질량·탄성·마찰을 대변하지 않는다.</p>
+          </article>
+          <article>
+            <p class="critique-label">Future</p>
+            <h3>코드와 소재 샘플을 같은 표로 기록한다.</h3>
+            <p>실제 주름 샘플의 복귀 시간과 간격을 촬영해 모델의 변화 방향부터 검증할 예정이다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section frame credits" id="credits" aria-labelledby="credits-title">
+        <header class="section-head compact">
+          <p class="section-number">07</p>
+          <h2 id="credits-title">Authorship / 도구를 쓴 방식까지 작업의 일부로</h2>
+        </header>
+
+        <div class="credits-grid">
+          <div>
+            <p class="credits-label">Author role</p>
+            <p>
+              문제 정의, 범위 설정, 시각 방향, 상호작용의 우선순위, 대안 비교와 최종 판단은 저자의 몫이다.
+              C++ 모델과 인터페이스는 공개 저장소에서 함께 검토할 수 있도록 구성했다.
+            </p>
+          </div>
+          <div>
+            <p class="credits-label">AI disclosure</p>
+            <p>
+              생성형 AI는 구현 대안 탐색, 코드 초안과 검토, 문장 편집을 보조했다. 출력은 그대로 결론으로
+              사용하지 않았으며, 아직 수행하지 않은 사용자 시험이나 소재 검증을 만들어내지 않았다.
+            </p>
+          </div>
+          <div class="source-list">
+            <p class="credits-label">Primary references</p>
+            <a href="https://emscripten.org/docs/compiling/WebAssembly.html" target="_blank" rel="noreferrer">
+              Emscripten — Compiling to WebAssembly <span>↗</span>
+            </a>
+            <a href="https://matthias-research.github.io/pages/publications/posBasedDyn.pdf" target="_blank" rel="noreferrer">
+              Müller et al. — Position Based Dynamics <span>↗</span>
+            </a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">
+              MDN — Pointer events <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer frame">
+      <p>PLEAT/STATE&nbsp;&nbsp;PS—001</p>
+      <p>C++20 × WEBASSEMBLY × CANVAS</p>
+      <a href="#top">위로 ↑</a>
+    </footer>
+
+    <noscript>
+      <p class="noscript">이 연구의 실시간 도구는 JavaScript가 필요합니다. 본문의 모델 범위와 결정 기록은 그대로 읽을 수 있습니다.</p>
+    </noscript>
+    <script src="./pleat.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

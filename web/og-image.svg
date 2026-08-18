@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Pleat State — C++20 and WebAssembly material study</title>
+  <desc id="description">A warm paper technical poster with a pleated line mesh, project title, and runtime labels.</desc>
+  <rect width="1200" height="630" fill="#efeee9"/>
+  <g fill="none" stroke="#181917">
+    <rect x="31.5" y="31.5" width="1137" height="567"/>
+    <path d="M32 92.5h1136M32 520.5h1136"/>
+    <path d="M746.5 93v427" stroke="#b9b8b1"/>
+  </g>
+
+  <g fill="#181917" font-family="Helvetica Neue, Arial, sans-serif">
+    <text x="56" y="71" font-size="20" font-weight="700" letter-spacing="-0.6">PLEAT<tspan fill="#a43b2b">/STATE</tspan></text>
+    <text x="746" y="70" font-family="SFMono-Regular, Consolas, monospace" font-size="12" letter-spacing="1.8">MATERIAL STUDY — PS 001</text>
+    <text x="56" y="186" font-size="72" font-weight="600" letter-spacing="-4">FORCE LEAVES</text>
+    <text x="56" y="254" font-size="72" font-weight="600" letter-spacing="-4">A FOLD.</text>
+    <text x="58" y="316" font-size="19" font-weight="500">A browser study of pleat, tension, damping and gravity.</text>
+    <text x="58" y="354" font-family="SFMono-Regular, Consolas, monospace" font-size="12" letter-spacing="1.2">C++20 CORE  →  WEBASSEMBLY  →  CANVAS</text>
+    <text x="56" y="561" font-family="SFMono-Regular, Consolas, monospace" font-size="12" letter-spacing="1.2">31 × 21 NODES</text>
+    <text x="394" y="561" font-family="SFMono-Regular, Consolas, monospace" font-size="12" letter-spacing="1.2">FIXED 1/120 S</text>
+    <text x="747" y="561" font-family="SFMono-Regular, Consolas, monospace" font-size="12" letter-spacing="1.2">LIVE MODEL / NOT MATERIAL CALIBRATION</text>
+  </g>
+
+  <g transform="translate(777 130)" fill="none" stroke-linecap="square">
+    <rect x="0.5" y="0.5" width="340" height="340" stroke="#777873"/>
+    <g stroke="#b9b8b1" stroke-width="1">
+      <path d="M0 0C30 18 37-18 68 0s38 18 68 0 38-18 68 0 38 18 68 0 38-18 68 0"/>
+      <path d="M0 34C30 55 37 13 68 34s38 21 68 0 38-21 68 0 38 21 68 0 38-21 68 0"/>
+      <path d="M0 68C30 92 37 44 68 68s38 24 68 0 38-24 68 0 38 24 68 0 38-24 68 0"/>
+      <path d="M0 102C30 129 37 75 68 102s38 27 68 0 38-27 68 0 38 27 68 0 38-27 68 0"/>
+      <path d="M0 136C30 166 37 106 68 136s38 30 68 0 38-30 68 0 38 30 68 0 38-30 68 0"/>
+      <path d="M0 170C30 203 37 137 68 170s38 33 68 0 38-33 68 0 38 33 68 0 38-33 68 0"/>
+      <path d="M0 204C30 240 37 168 68 204s38 36 68 0 38-36 68 0 38 36 68 0 38-36 68 0"/>
+      <path d="M0 238C30 277 37 199 68 238s38 39 68 0 38-39 68 0 38 39 68 0 38-39 68 0"/>
+      <path d="M0 272C30 314 37 230 68 272s38 42 68 0 38-42 68 0 38 42 68 0 38-42 68 0"/>
+      <path d="M0 306C30 351 37 261 68 306s38 45 68 0 38-45 68 0 38 45 68 0 38-45 68 0"/>
+      <path d="M0 340C30 388 37 292 68 340s38 48 68 0 38-48 68 0 38 48 68 0 38-48 68 0"/>
+    </g>
+    <g stroke="#777873" stroke-width="1">
+      <path d="M0 0v340M34 10v340M68 0v340M102-10v340M136 0v340M170 10v340M204 0v340M238-10v340M272 0v340M306 10v340M340 0v340"/>
+    </g>
+    <g fill="#a43b2b" stroke="none">
+      <rect x="-3" y="-3" width="6" height="6"/>
+      <rect x="65" y="-3" width="6" height="6"/>
+      <rect x="133" y="-3" width="6" height="6"/>
+      <rect x="201" y="-3" width="6" height="6"/>
+      <rect x="269" y="-3" width="6" height="6"/>
+      <rect x="337" y="-3" width="6" height="6"/>
+    </g>
+  </g>
+</svg>
